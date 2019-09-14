@@ -105,5 +105,6 @@ module.exports = {
     'no-unused-vars': ['error', {'varsIgnorePattern': '\\w_$'}],
     'jsx-a11y/accessible-emoji': 'off',
     'jsx-a11y/label-has-associated-control': 'off',
+    'react/prop-types': 'off',
   },
 };
