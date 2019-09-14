@@ -103,5 +103,7 @@ module.exports = {
     'arrow-parens': ['error', 'always'],
     'import/extensions': ['error', 'always', {'ignorePackages': true}],
     'no-unused-vars': ['error', {'varsIgnorePattern': '\\w_$'}],
+    'jsx-a11y/accessible-emoji': 'off',
+    'jsx-a11y/label-has-associated-control': 'off',
   },
 };

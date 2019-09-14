@@ -1,6 +1,12 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+  entry: './src/index.js',
+  output: {
+    path: `${__dirname}/build`,
+    publicPath: '/',
+    filename: 'main.js',
+  },
   module: {
     rules: [
       {
@@ -32,7 +38,10 @@ module.exports = {
   plugins: [
     new HtmlWebPackPlugin({
       template: './src/index.html',
-      filename: './index.html',
+      filename: 'index.html',
     }),
   ],
+  devServer: {
+    historyApiFallback: true,
+  },
 };

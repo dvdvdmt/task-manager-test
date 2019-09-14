@@ -1,17 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Child({text}) {
+function TaskRow({text}) {
   return (
-    <div data-test="child">
-    Child component:
+    <div data-test="task-row">
       {text}
     </div>
   );
 }
 
-Child.propTypes = {
+TaskRow.propTypes = {
   text: PropTypes.string.isRequired,
 };
 
-export default Child;
+export default TaskRow;
