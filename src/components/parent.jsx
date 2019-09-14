@@ -3,7 +3,9 @@ import Child from './child.jsx';
 
 function Parent() {
   return (
-    <Child text="Hello world!" />
+    <div data-test="parent">
+      <Child text="Hello world!" />
+    </div>
   );
 }
 

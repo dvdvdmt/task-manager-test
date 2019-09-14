@@ -5,7 +5,7 @@ import Parent from './components/parent.jsx';
 
 function App() {
   return (
-    <div className="app">
+    <div className="app" data-test="app">
       <Parent />
     </div>
   );

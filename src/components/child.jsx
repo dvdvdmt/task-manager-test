@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 function Child({text}) {
   return (
-    <div>
+    <div data-test="child">
     Child component:
       {text}
     </div>
