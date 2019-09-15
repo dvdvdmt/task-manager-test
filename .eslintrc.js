@@ -106,5 +106,6 @@ module.exports = {
     'jsx-a11y/accessible-emoji': 'off',
     'jsx-a11y/label-has-associated-control': 'off',
     'react/prop-types': 'off',
+    'no-unused-expressions': 'off'
   },
 };

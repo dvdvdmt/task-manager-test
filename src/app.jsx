@@ -1,6 +1,6 @@
 import {navigate, useRoutes} from 'hookrouter';
 import ReactDOM from 'react-dom';
-import React from 'react';
+import React, {useState} from 'react';
 import styles_ from './app.scss';
 import Login from './components/login/login.jsx';
 import NotFound from './components/not-found/not-found.jsx';
@@ -17,15 +17,24 @@ const routes = {
 };
 
 function App() {
-  if (!auth.isAuthenticated) {
+  const [loading, setLoading] = useState(true);
+  auth.authenticate().then(() => {
+    setLoading(false);
+  });
+  if (!loading && !auth.isAuthenticated) {
     navigate('/login');
   }
   const routeResult = useRoutes(routes);
+  const appContent = loading
+    ? (<>Loading...</>)
+    : (
+      <>
+        <NavBar />
+        {routeResult || <NotFound />}
+      </>
+    );
   return (
-    <div className="app" data-test="app">
-      <NavBar />
-      {routeResult || <NotFound />}
-    </div>
+    <>{appContent}</>
   );
 }
 
