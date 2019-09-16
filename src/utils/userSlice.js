@@ -6,6 +6,7 @@ const initialState = {
   isLoading: false,
   isAuthenticated: false,
   error: null,
+  data: {},
 };
 const {reducer, actions} = createSlice({
   slice: 'user',
@@ -14,9 +15,14 @@ const {reducer, actions} = createSlice({
     authStart: start,
     authSuccess: success,
     authFailure: failure,
-    loginStart: start,
-    loginSuccess: success,
-    loginFailure: failure,
+    logInStart: start,
+    logInSuccess: success,
+    logInFailure: failure,
+    logOutStart: start,
+    logOutSuccess() {
+      return initialState;
+    },
+    logOutFailure: failure,
   },
 });
 
@@ -24,9 +30,10 @@ function start(state) {
   state.isLoading = true;
 }
 
-function success(state) {
+function success(state, {payload}) {
   state.isLoading = false;
   state.isAuthenticated = true;
+  state.data = payload;
 }
 
 function failure(state, action) {
@@ -39,17 +46,20 @@ export const {
   authStart,
   authSuccess,
   authFailure,
-  loginStart,
-  loginFailure,
-  loginSuccess,
+  logInStart,
+  logInFailure,
+  logInSuccess,
+  logOutStart,
+  logOutFailure,
+  logOutSuccess,
 } = actions;
 
 export function authenticate() {
   return async (dispatch) => {
     try {
       dispatch(authStart());
-      await authenticateUser();
-      dispatch(authSuccess());
+      const userData = await authenticateUser();
+      dispatch(authSuccess(userData));
     } catch (e) {
       dispatch(authFailure(e.message));
     }
@@ -59,11 +69,11 @@ export function authenticate() {
 export function login(name, password) {
   return async (dispatch) => {
     try {
-      dispatch(loginStart());
-      await loginUser(name, password);
-      dispatch(loginSuccess());
+      dispatch(logInStart());
+      const userData = await loginUser(name, password);
+      dispatch(logInSuccess(userData));
     } catch (e) {
-      dispatch(loginFailure(e.message));
+      dispatch(logInFailure(e.message));
     }
   };
 }
@@ -71,11 +81,11 @@ export function login(name, password) {
 export function logout() {
   return async (dispatch) => {
     try {
-      dispatch(loginStart());
+      dispatch(logOutStart());
       await logOutUser();
-      dispatch(loginSuccess());
+      dispatch(logOutSuccess());
     } catch (e) {
-      dispatch(loginFailure(e.message));
+      dispatch(logOutFailure(e.message));
     }
   };
 }

@@ -24,6 +24,14 @@ context('Login', () => {
     cy.visit('/');
     cy.get('{logout}').click();
     cy.url().should('include', '/login');
+    // can't reuse session after logging out
+    cy.window().then((w) => {
+      w.localStorage.setItem('session', '1');
+    });
+    cy.route('/session*').as('session-request');
+    cy.visit('/');
+    cy.wait('@session-request');
+    cy.url().should('include', '/login');
   });
 
   it('allows a user to log in if name and password are correct', () => {

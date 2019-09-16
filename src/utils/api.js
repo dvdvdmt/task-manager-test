@@ -13,7 +13,12 @@ export async function authenticateUser() {
   if (!session) {
     throw new Error('401 session is expired');
   }
+  const {data: [user]} = await api.get('users', {params: {id: session.userId}});
+  if (!user) {
+    throw new Error('401 the session has no user');
+  }
   setLocalSession(session.id);
+  return user;
 }
 
 export async function loginUser(name, password) {
@@ -23,11 +28,12 @@ export async function loginUser(name, password) {
   }
   const {data: session} = await api.post('sessions', {userId: user.id});
   setLocalSession(session.id);
+  return user;
 }
 
 export async function logOutUser() {
   const sessionId = getLocalSession();
-  await api.delete('sessions', {params: {id: sessionId}});
+  await api.delete(`sessions/${sessionId}`);
   removeLocalSession();
 }
 
