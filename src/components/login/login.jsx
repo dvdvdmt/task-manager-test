@@ -1,10 +1,16 @@
 import {navigate} from 'hookrouter';
 import React, {useState} from 'react';
-import auth from '../../utils/auth.js';
+import {useDispatch, useSelector} from 'react-redux';
+import {login} from '../../utils/authSlice.js';
 
 function Login() {
+  const dispatch = useDispatch();
+  const {isAuthenticated} = useSelector(({auth}) => auth);
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  if (isAuthenticated) {
+    navigate('/');
+  }
   return (
     <div className="login">
       <form className="login__form" onSubmit={handleSubmit}>
@@ -23,8 +29,7 @@ function Login() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    await auth.login(userName, password);
-    navigate('/');
+    dispatch(login(userName, password));
   }
 
   function handleChangeUserName(e) {

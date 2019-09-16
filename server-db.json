@@ -6,6 +6,9 @@
       "name": "robot",
       "password": "password",
       "session": "service user session"
+    },
+    {
+      "id": 2
     }
   ],
   "sessions": [

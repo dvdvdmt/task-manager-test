@@ -102,10 +102,10 @@ module.exports = {
     'object-curly-spacing': ['error', 'never'],
     'arrow-parens': ['error', 'always'],
     'import/extensions': ['error', 'always', {'ignorePackages': true}],
-    'no-unused-vars': ['error', {'varsIgnorePattern': '\\w_$'}],
     'jsx-a11y/accessible-emoji': 'off',
     'jsx-a11y/label-has-associated-control': 'off',
     'react/prop-types': 'off',
-    'no-unused-expressions': 'off'
+    'no-unused-expressions': 'off',
+    'no-shadow': 'off'
   },
 };

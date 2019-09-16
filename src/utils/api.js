@@ -4,13 +4,30 @@ const api = axios.create({
   baseURL: 'http://localhost:3000/',
 });
 
-export default {
-  async getSession(sessionId) {
-    const {data: [session]} = await api.get('sessions', {params: {id: sessionId}});
-    return session;
-  },
-  async getUser(name, password) {
-    const {data: [user]} = await api.get('users', {params: {name, password}});
-    return user;
-  },
-};
+export async function authenticateUser() {
+  const sessionId = getLocalSession();
+  if (!sessionId) {
+    throw new Error('401 authorization is needed');
+  }
+  const {data: [session]} = await api.get('sessions', {params: {id: sessionId}});
+  if (!session) {
+    throw new Error('401 session is expired');
+  }
+  setLocalSession(session);
+}
+
+function getLocalSession() {
+  return localStorage.getItem('session');
+}
+
+function setLocalSession(session) {
+  localStorage.setItem('session', session);
+}
+
+export async function loginUser(name, password) {
+  const {data: [user]} = await api.get('users', {params: {name, password}});
+  if (!user) {
+    throw new Error('401 invalid credentials');
+  }
+  setLocalSession(user.session);
+}

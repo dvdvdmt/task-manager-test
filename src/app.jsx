@@ -1,13 +1,15 @@
 import {navigate, useRoutes} from 'hookrouter';
+import React, {useEffect} from 'react';
 import ReactDOM from 'react-dom';
-import React, {useState} from 'react';
-import styles_ from './app.scss';
+import {Provider, useDispatch, useSelector} from 'react-redux';
+import './app.scss';
 import Login from './components/login/login.jsx';
+import NavBar from './components/nav-bar/nav-bar.jsx';
 import NotFound from './components/not-found/not-found.jsx';
 import TaskList from './components/task-list/task-list.jsx';
 import TaskView from './components/task-view/task-view.jsx';
-import NavBar from './components/nav-bar/nav-bar.jsx';
-import auth from './utils/auth.js';
+import {authenticate} from './utils/authSlice.js';
+import store from './utils/store.js';
 
 const routes = {
   '/': () => <TaskList />,
@@ -17,15 +19,16 @@ const routes = {
 };
 
 function App() {
-  const [loading, setLoading] = useState(true);
-  auth.authenticate().then(() => {
-    setLoading(false);
-  });
-  if (!loading && !auth.isAuthenticated) {
+  const dispatch = useDispatch();
+  const {isAuthenticated, isLoading} = useSelector(({auth}) => auth);
+  useEffect(() => {
+    dispatch(authenticate());
+  }, [dispatch]);
+  if (!isLoading && !isAuthenticated) {
     navigate('/login');
   }
   const routeResult = useRoutes(routes);
-  const appContent = loading
+  return isLoading
     ? (<>Loading...</>)
     : (
       <>
@@ -33,9 +36,9 @@ function App() {
         {routeResult || <NotFound />}
       </>
     );
-  return (
-    <>{appContent}</>
-  );
 }
 
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render(
+  <Provider store={store}><App /></Provider>,
+  document.getElementById('app'),
+);
