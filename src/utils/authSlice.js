@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign,no-unused-vars */
 import {createSlice} from 'redux-starter-kit';
-import {authenticateUser, loginUser} from './api.js';
+import {authenticateUser, loginUser, logOutUser} from './api.js';
 
 const initialState = {
   isLoading: false,
@@ -45,7 +45,6 @@ export const {
   loginStart,
   loginFailure,
   loginSuccess,
-  logout,
 } = actions;
 
 export function authenticate() {
@@ -65,6 +64,18 @@ export function login(name, password) {
     try {
       dispatch(loginStart());
       await loginUser(name, password);
+      dispatch(loginSuccess());
+    } catch (e) {
+      dispatch(loginFailure(e.message));
+    }
+  };
+}
+
+export function logout() {
+  return async (dispatch) => {
+    try {
+      dispatch(loginStart());
+      await logOutUser();
       dispatch(loginSuccess());
     } catch (e) {
       dispatch(loginFailure(e.message));

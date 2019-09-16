@@ -18,7 +18,8 @@ context('Login', () => {
     cy.url().should('not.include', '/login');
   });
 
-  it.skip('logs out', () => {
+  it('logs out', () => {
+    cy.get('{logout}').should('not.exist');
     cy.login();
     cy.visit('/');
     cy.get('{logout}').click();
