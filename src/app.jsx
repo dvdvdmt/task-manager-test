@@ -3,11 +3,11 @@ import React, {useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import {Provider, useDispatch, useSelector} from 'react-redux';
 import './app.scss';
-import Login from './components/login/login.jsx';
-import NavBar from './components/nav-bar/nav-bar.jsx';
-import NotFound from './components/not-found/not-found.jsx';
-import TaskList from './components/task-list/task-list.jsx';
-import TaskView from './components/task-view/task-view.jsx';
+import Login from './features/login/login.jsx';
+import NavBar from './features/nav-bar/nav-bar.jsx';
+import NotFound from './features/not-found/not-found.jsx';
+import TaskList from './features/task-list/task-list.jsx';
+import TaskView from './features/task-view/task-view.jsx';
 import {authenticate} from './utils/authSlice.js';
 import store from './utils/store.js';
 
