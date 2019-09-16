@@ -23,7 +23,6 @@ Cypress.Commands.add('login', () => {
         method: 'POST',
         url: `${apiBaseUrl}/sessions`,
         body: {
-          id: user.session,
           userId: user.id,
         },
       });
