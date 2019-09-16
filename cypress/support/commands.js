@@ -11,13 +11,25 @@ function addDataTestSelectors(selector) {
   return selector.replace(/{([-\w]+)}/g, '[data-test="$1"]');
 }
 
+const apiBaseUrl = 'http://localhost:3000';
 Cypress.Commands.add('login', () => {
   cy.request({
     method: 'GET',
-    url: 'http://localhost:3000/users?name=robot',
+    url: `${apiBaseUrl}/users?name=robot`,
   })
     .then((resp) => {
-      const [{session}] = resp.body;
-      window.localStorage.setItem('session', session);
+      const [user] = resp.body;
+      return cy.request({
+        method: 'POST',
+        url: `${apiBaseUrl}/sessions`,
+        body: {
+          id: user.session,
+          userId: user.id,
+        },
+      });
+    })
+    .then((resp) => {
+      const session = resp.body;
+      localStorage.setItem('session', session.id);
     });
 });

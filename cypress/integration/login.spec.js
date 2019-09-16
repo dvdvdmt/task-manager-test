@@ -1,5 +1,6 @@
 context('Login', () => {
   beforeEach(() => {
+    cy.exec('npm run db-seed');
     cy.server();
     cy.route('/sockjs-node/*').as('webpack-dev-server');
     cy.visit('/');
@@ -15,6 +16,13 @@ context('Login', () => {
     cy.login();
     cy.visit('/login');
     cy.url().should('not.include', '/login');
+  });
+
+  it.skip('logs out', () => {
+    cy.login();
+    cy.visit('/');
+    cy.get('{logout}').click();
+    cy.url().should('include', '/login');
   });
 
   it('allows a user to log in if name and password are correct', () => {

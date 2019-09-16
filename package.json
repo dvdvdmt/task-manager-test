@@ -7,7 +7,8 @@
   "scripts": {
     "start": "webpack-dev-server --open --mode development",
     "build": "webpack --mode production",
-    "api-server": "json-server server-db.json",
+    "api-server": "npm run db-seed && json-server --watch db.json",
+    "db-seed": "cp db-seed.json db.json",
     "lint": "eslint ./src ./cypress",
     "e2e": "cypress open"
   },
