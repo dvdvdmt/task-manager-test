@@ -8,6 +8,7 @@ import NavBar from './features/nav-bar/nav-bar.jsx';
 import NotFound from './features/not-found/not-found.jsx';
 import TaskList from './features/task-list/task-list.jsx';
 import TaskView from './features/task-view/task-view.jsx';
+import UserProfile from './features/user-profile/user-profile.jsx';
 import store from './utils/store.js';
 import {authenticate, userSelector} from './utils/userSlice.js';
 
@@ -16,19 +17,20 @@ const routes = {
   '/tasks': () => <TaskList />,
   '/tasks/:id': ({id}) => <TaskView id={id} />,
   '/login': () => <Login />,
+  '/me': () => <UserProfile />,
 };
 
 function App() {
   const dispatch = useDispatch();
-  const {isAuthenticated, isLoading} = useSelector(userSelector);
+  const {isLogInNeeded, isFirstLoad} = useSelector(userSelector);
   useEffect(() => {
     dispatch(authenticate());
   }, [dispatch]);
-  if (!isLoading && !isAuthenticated) {
+  if (isLogInNeeded) {
     navigate('/login');
   }
   const routeResult = useRoutes(routes);
-  return isLoading
+  return isFirstLoad
     ? (<>Loading...</>)
     : (
       <>

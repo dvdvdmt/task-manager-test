@@ -1,16 +1,29 @@
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import {A} from 'hookrouter';
 import {logout, userSelector} from '../../utils/userSlice.js';
 
-function LogOut({isVisible}) {
-  const dispatch = useDispatch();
+function UserBar({isVisible, avatarUrl, fullName}) {
   if (!isVisible) {
     return '';
   }
   return (
+    <div className="user-bar">
+      <A href="/me" className="user-bar__profile-link" data-test="profile-link">
+        <div className="user-bar__avatar"><img src={avatarUrl} alt="User avatar" /></div>
+        <div className="user-bar__name">{fullName}</div>
+      </A>
+      <LogOutBtn />
+    </div>
+  );
+}
+
+function LogOutBtn() {
+  const dispatch = useDispatch();
+  return (
     <button
       type="button"
-      className="logout"
+      className="logout-btn"
       data-test="logout"
       onClick={onClickLogout}
     >
@@ -24,13 +37,11 @@ function LogOut({isVisible}) {
 }
 
 export default function NavBar() {
-  const {isAuthenticated} = useSelector(userSelector);
+  const {isAuthenticated, avatarUrl, fullName} = useSelector(userSelector);
   return (
     <nav className="nav-bar">
       <div className="brand-logo">🗄</div>
-      <div className="user-avatar">🌚</div>
-      <div className="user-name">Creepy Moon</div>
-      <LogOut isVisible={isAuthenticated} />
+      <UserBar isVisible={isAuthenticated} avatarUrl={avatarUrl} fullName={fullName} />
     </nav>
   );
 }

@@ -3,10 +3,13 @@ import {createSlice} from 'redux-starter-kit';
 import {authenticateUser, loginUser, logOutUser} from './api.js';
 
 const initialState = {
+  isFirstLoad: true,
   isLoading: false,
   isAuthenticated: false,
   error: null,
-  data: {},
+  name: null,
+  fullName: null,
+  avatarUrl: null,
 };
 const {reducer, actions} = createSlice({
   slice: 'user',
@@ -19,21 +22,25 @@ const {reducer, actions} = createSlice({
     logInSuccess: success,
     logInFailure: failure,
     logOutStart: start,
-    logOutSuccess() {
-      return initialState;
+    logOutSuccess(state) {
+      state.isLoading = false;
+      state.isAuthenticated = false;
     },
     logOutFailure: failure,
   },
 });
 
 function start(state) {
+  state.isFirstLoad = false;
   state.isLoading = true;
 }
 
-function success(state, {payload}) {
+function success(state, {payload: {name, fullName, avatarUrl}}) {
   state.isLoading = false;
   state.isAuthenticated = true;
-  state.data = payload;
+  state.name = name;
+  state.fullName = fullName;
+  state.avatarUrl = avatarUrl;
 }
 
 function failure(state, action) {
@@ -91,7 +98,9 @@ export function logout() {
 }
 
 export function userSelector(store) {
-  return store.user;
+  const {user: {isFirstLoad, isLoading, isAuthenticated}} = store;
+  const isLogInNeeded = !isFirstLoad && !isLoading && !isAuthenticated;
+  return {...store.user, isLogInNeeded};
 }
 
 export default reducer;

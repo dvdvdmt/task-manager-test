@@ -1,4 +1,10 @@
 context('Not found response', () => {
+  before(() => {
+    cy.exec('npm run db-seed');
+    cy.server();
+    cy.login();
+  });
+
   it('shows 404 error in case of invalid route', () => {
     cy.visit('/');
     cy.get('{not-found}').should('not.exist');
