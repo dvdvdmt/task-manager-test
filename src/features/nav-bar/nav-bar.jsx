@@ -1,10 +1,10 @@
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {logout} from '../../utils/authSlice.js';
+import {logout, userSelector} from '../../utils/userSlice.js';
 
-function LogOut({isAuthenticated}) {
+function LogOut({isVisible}) {
   const dispatch = useDispatch();
-  if (!isAuthenticated) {
+  if (!isVisible) {
     return '';
   }
   return (
@@ -24,13 +24,13 @@ function LogOut({isAuthenticated}) {
 }
 
 export default function NavBar() {
-  const {isAuthenticated} = useSelector(({auth}) => auth);
+  const {isAuthenticated} = useSelector(userSelector);
   return (
     <nav className="nav-bar">
       <div className="brand-logo">🗄</div>
       <div className="user-avatar">🌚</div>
       <div className="user-name">Creepy Moon</div>
-      <LogOut isAuthenticated={isAuthenticated} />
+      <LogOut isVisible={isAuthenticated} />
     </nav>
   );
 }

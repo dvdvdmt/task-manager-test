@@ -8,7 +8,7 @@ const initialState = {
   error: null,
 };
 const {reducer, actions} = createSlice({
-  slice: 'auth',
+  slice: 'user',
   initialState,
   reducers: {
     authStart: start,
@@ -17,9 +17,6 @@ const {reducer, actions} = createSlice({
     loginStart: start,
     loginSuccess: success,
     loginFailure: failure,
-    logout(state) {
-      state.isAuthenticated = false;
-    },
   },
 });
 
@@ -81,6 +78,10 @@ export function logout() {
       dispatch(loginFailure(e.message));
     }
   };
+}
+
+export function userSelector(store) {
+  return store.user;
 }
 
 export default reducer;

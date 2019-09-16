@@ -2,9 +2,10 @@
   "users": [
     {
       "id": 1,
-      "fullName": "Service user",
+      "fullName": "Service User",
       "name": "robot",
-      "password": "password"
+      "password": "password",
+      "avatarUrl": "http://lorempixel.com/200/200/people/6/"
     }
   ],
   "sessions": []

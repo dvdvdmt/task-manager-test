@@ -1,11 +1,11 @@
 import {navigate} from 'hookrouter';
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {login} from '../../utils/authSlice.js';
+import {login, userSelector} from '../../utils/userSlice.js';
 
 function Login() {
   const dispatch = useDispatch();
-  const {isAuthenticated} = useSelector(({auth}) => auth);
+  const {isAuthenticated} = useSelector(userSelector);
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   if (isAuthenticated) {

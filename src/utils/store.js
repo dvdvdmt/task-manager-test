@@ -1,6 +1,6 @@
 import {combineReducers, configureStore} from 'redux-starter-kit';
-import authReducer from './authSlice.js';
+import userReducer from './userSlice.js';
 
-const reducer = combineReducers({auth: authReducer});
+const reducer = combineReducers({user: userReducer});
 
 export default configureStore({reducer});

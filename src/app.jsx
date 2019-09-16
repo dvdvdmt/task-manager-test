@@ -8,8 +8,8 @@ import NavBar from './features/nav-bar/nav-bar.jsx';
 import NotFound from './features/not-found/not-found.jsx';
 import TaskList from './features/task-list/task-list.jsx';
 import TaskView from './features/task-view/task-view.jsx';
-import {authenticate} from './utils/authSlice.js';
 import store from './utils/store.js';
+import {authenticate, userSelector} from './utils/userSlice.js';
 
 const routes = {
   '/': () => <TaskList />,
@@ -20,7 +20,7 @@ const routes = {
 
 function App() {
   const dispatch = useDispatch();
-  const {isAuthenticated, isLoading} = useSelector(({auth}) => auth);
+  const {isAuthenticated, isLoading} = useSelector(userSelector);
   useEffect(() => {
     dispatch(authenticate());
   }, [dispatch]);
