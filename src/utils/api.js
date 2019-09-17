@@ -4,6 +4,11 @@ const api = axios.create({
   baseURL: 'http://localhost:3000/',
 });
 
+export async function getTasks() {
+  const {data: tasks} = await api.get('tasks');
+  return tasks;
+}
+
 export async function authenticateUser() {
   const sessionId = getLocalSession();
   if (!sessionId) {
