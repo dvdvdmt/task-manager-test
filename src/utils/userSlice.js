@@ -31,12 +31,13 @@ const {reducer, actions} = createSlice({
 });
 
 function start(state) {
-  state.isFirstLoad = false;
   state.isLoading = true;
 }
 
 function success(state, {payload: {name, fullName, avatarUrl}}) {
+  state.isFirstLoad = false;
   state.isLoading = false;
+  state.error = null;
   state.isAuthenticated = true;
   state.name = name;
   state.fullName = fullName;
@@ -44,6 +45,7 @@ function success(state, {payload: {name, fullName, avatarUrl}}) {
 }
 
 function failure(state, action) {
+  state.isFirstLoad = false;
   state.isLoading = false;
   state.isAuthenticated = false;
   state.error = action.payload;
