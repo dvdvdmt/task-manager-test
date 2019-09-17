@@ -14,6 +14,11 @@ export async function getTasks() {
   return tasks;
 }
 
+export async function getTask(id) {
+  const {data: task} = await api.get(`tasks/${id}`);
+  return task;
+}
+
 export async function authenticateUser() {
   const sessionId = getLocalSession();
   if (!sessionId) {

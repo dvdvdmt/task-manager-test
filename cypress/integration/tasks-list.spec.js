@@ -42,4 +42,13 @@ context('Task list', () => {
       expect($rows).to.contain('program');
     });
   });
+
+  it.only('opens task', () => {
+    cy.get('{task-row}').eq(0).click({force: true});
+    cy.url().should('include', '/tasks/1');
+    cy.get('{task-view}').should(($task) => {
+      expect($task).to.contain('Task summary');
+      expect($task).to.contain('Task description');
+    });
+  });
 });

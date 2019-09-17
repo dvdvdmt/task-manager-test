@@ -16,7 +16,7 @@ import {authenticate, userSelector} from './utils/userSlice.js';
 const routes = {
   '/': () => <TaskList />,
   '/tasks': () => <TaskList />,
-  '/tasks/:id': ({id}) => <TaskView id={id} />,
+  '/tasks/:id': ({id}) => <TaskView taskId={id} />,
   '/login': () => <Login />,
   '/me': () => <UserProfile />,
 };

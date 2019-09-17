@@ -1,17 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {useSelector} from 'react-redux';
+import {A} from 'hookrouter';
 import {userByIdSelector} from '../../../utils/usersSlice.js';
 
 function TaskRow({task}) {
   const author = useSelector(userByIdSelector(task.authorId));
   return (
-    <div data-test="task-row">
+    <A href={`tasks/${task.id}`} data-test="task-row">
       <div data-test="task-id">{task.id}</div>
       <div data-test="task-summary">{task.summary}</div>
       <div data-test="task-due-date">{task.dueDate}</div>
       <Author author={author} />
-    </div>
+    </A>
   );
 }
 
