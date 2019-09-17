@@ -33,4 +33,13 @@ context('Task list', () => {
       });
     });
   });
+
+  it('filters tasks', () => {
+    cy.get('{task-filter}').should('exist');
+    cy.get('{task-filter}').type('program');
+    cy.get('{task-row}').should(($rows) => {
+      expect($rows).to.have.length(1);
+      expect($rows).to.contain('program');
+    });
+  });
 });

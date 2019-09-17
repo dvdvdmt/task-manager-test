@@ -5,10 +5,12 @@ import {getTasks} from '../../utils/api.js';
 const initialState = {
   isLoading: false,
   error: null,
+  tasks: [],
   taskById: {},
   tasksPerPage: 10,
   pageNumber: 0,
   currentPageTaskIds: [],
+  filter: '',
 };
 const {reducer, actions} = createSlice({
   slice: 'tasks',
@@ -17,6 +19,10 @@ const {reducer, actions} = createSlice({
     fetchStart: start,
     fetchSuccess: success,
     fetchFailure: failure,
+    setTaskFilter(state, {payload}) {
+      state.filter = payload;
+      state.currentPageTaskIds = getCurrentPageTaskIds(state);
+    },
   },
 });
 
@@ -27,14 +33,11 @@ function start(state) {
 function success(state, {payload: tasks}) {
   state.isLoading = false;
   state.error = null;
+  state.tasks = tasks;
   tasks.forEach((task) => {
     state.taskById[task.id] = task;
   });
-  const sliceStart = state.pageNumber * state.tasksPerPage;
-  const sliceEnd = (state.pageNumber + 1) * state.tasksPerPage;
-  state.currentPageTaskIds = tasks
-    .slice(sliceStart, sliceEnd)
-    .map(({id}) => id);
+  state.currentPageTaskIds = getCurrentPageTaskIds(state);
 }
 
 function failure(state, action) {
@@ -42,10 +45,27 @@ function failure(state, action) {
   state.error = action.payload;
 }
 
+function getCurrentPageTaskIds({
+  tasks,
+  pageNumber,
+  tasksPerPage,
+  filter,
+}) {
+  const sliceStart = pageNumber * tasksPerPage;
+  const sliceEnd = (pageNumber + 1) * tasksPerPage;
+  if (filter) {
+    tasks = tasks.filter(({summary}) => summary.includes(filter));
+  }
+  return tasks
+    .slice(sliceStart, sliceEnd)
+    .map(({id}) => id);
+}
+
 export const {
   fetchStart,
   fetchSuccess,
   fetchFailure,
+  setTaskFilter,
 } = actions;
 
 export function fetchTasks() {
