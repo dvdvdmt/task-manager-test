@@ -1,12 +1,12 @@
 /* eslint-disable no-param-reassign,no-unused-vars */
 import {createSlice} from 'redux-starter-kit';
-import {getTask, getTasks} from '../../utils/api.js';
+import {getTask, getTasks, updateTask} from '../../utils/api.js';
 
 const initialState = {
   isFirstLoad: true,
   isLoading: false,
+  isTaskSaving: false,
   error: null,
-  tasks: [],
   taskById: {},
   tasksPerPage: 10,
   pageNumber: 0,
@@ -22,7 +22,6 @@ const {reducer, actions} = createSlice({
       state.isFirstLoad = false;
       state.isLoading = false;
       state.error = null;
-      state.tasks = tasks;
       tasks.forEach((task) => {
         state.taskById[task.id] = task;
       });
@@ -33,13 +32,23 @@ const {reducer, actions} = createSlice({
     fetchTaskSuccess(state, {payload: task}) {
       state.isFirstLoad = false;
       state.isLoading = false;
-      state.tasks.push(task);
       state.taskById[task.id] = task;
     },
     fetchTaskFailure: failure,
     setTaskFilter(state, {payload}) {
       state.filter = payload;
       state.currentPageTaskIds = getCurrentPageTaskIds(state);
+    },
+    saveTaskStart(state) {
+      state.isTaskSaving = true;
+    },
+    saveTaskFailure(state, {payload}) {
+      state.isTaskSaving = false;
+      state.error = payload;
+    },
+    saveTaskSuccess(state, {payload: task}) {
+      state.isTaskSaving = false;
+      state.taskById[task.id] = task;
     },
   },
 });
@@ -55,13 +64,14 @@ function failure(state, action) {
 }
 
 function getCurrentPageTaskIds({
-  tasks,
+  taskById,
   pageNumber,
   tasksPerPage,
   filter,
 }) {
   const sliceStart = pageNumber * tasksPerPage;
   const sliceEnd = (pageNumber + 1) * tasksPerPage;
+  let tasks = Object.values(taskById);
   if (filter) {
     tasks = tasks.filter(({summary}) => summary.includes(filter));
   }
@@ -78,6 +88,9 @@ export const {
   fetchTaskStart,
   fetchTaskSuccess,
   setTaskFilter,
+  saveTaskStart,
+  saveTaskFailure,
+  saveTaskSuccess,
 } = actions;
 
 export function fetchTasks() {
@@ -101,6 +114,19 @@ export function fetchTask(id) {
       dispatch(fetchTaskSuccess(tasks));
     } catch (e) {
       dispatch(fetchTaskFailure(e.message));
+      throw e;
+    }
+  };
+}
+
+export function saveTask(task) {
+  return async (dispatch) => {
+    try {
+      dispatch(saveTaskStart());
+      const updatedTask = await updateTask(task);
+      dispatch(saveTaskSuccess(updatedTask));
+    } catch (e) {
+      dispatch(saveTaskFailure(e.message));
       throw e;
     }
   };

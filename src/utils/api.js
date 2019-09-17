@@ -19,6 +19,11 @@ export async function getTask(id) {
   return task;
 }
 
+export async function updateTask(task) {
+  const {data: updatedTask} = await api.patch(`tasks/${task.id}`, task);
+  return updatedTask;
+}
+
 export async function authenticateUser() {
   const sessionId = getLocalSession();
   if (!sessionId) {

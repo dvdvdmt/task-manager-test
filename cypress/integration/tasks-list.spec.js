@@ -43,12 +43,12 @@ context('Task list', () => {
     });
   });
 
-  it.only('opens task', () => {
+  it('opens task', () => {
     cy.get('{task-row}').eq(0).click({force: true});
     cy.url().should('include', '/tasks/1');
     cy.get('{task-view}').should(($task) => {
-      expect($task).to.contain('Task summary');
-      expect($task).to.contain('Task description');
+      expect($task.find('[data-test=task-summary]')).to.have.value('Task summary');
+      expect($task.find('[data-test=task-description]')).to.have.value('Task description');
     });
   });
 });
