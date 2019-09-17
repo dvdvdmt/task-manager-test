@@ -4,14 +4,18 @@ import {fromEvent} from 'rxjs';
 // eslint-disable-next-line import/extensions
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 import Loader from '../../components/loader.jsx';
+import {userSelector} from '../../utils/userSlice.js';
 import {fetchUsers, usersSelector} from '../../utils/usersSlice.js';
 import TaskRow from './task-row/task-row.jsx';
-import {fetchTasks, setTaskFilter, tasksSelector} from './tasksSlice.js';
+import {
+  createTask, fetchTasks, setTaskFilter, tasksSelector,
+} from './tasksSlice.js';
 
 export default function TaskList() {
   const dispatch = useDispatch();
   const {isLoading: isTasksLoading} = useSelector(tasksSelector);
   const {isLoading: isUsersLoading} = useSelector(usersSelector);
+  const {id: userId} = useSelector(userSelector);
   const isLoading = isTasksLoading || isUsersLoading;
   useEffect(() => {
     dispatch(fetchUsers());
@@ -19,7 +23,10 @@ export default function TaskList() {
   }, [dispatch]);
   return (
     <div data-test="task-list">
-      <TaskFilter />
+      <div className="task-list__filter-block">
+        <TaskFilter />
+        <button type="button" data-test="create-task" onClick={onClickCreateTask}>Create task</button>
+      </div>
       {
         isLoading
           ? <Loader />
@@ -27,6 +34,10 @@ export default function TaskList() {
       }
     </div>
   );
+
+  function onClickCreateTask() {
+    dispatch(createTask(userId));
+  }
 }
 
 function TaskTable() {
@@ -45,7 +56,6 @@ function TaskFilter() {
     const {current} = inputRef;
     const onInput$ = fromEvent(current, 'input').pipe(
       map((e) => e.target.value),
-      // filter((text) => text.length > 2),
       debounceTime(300),
       distinctUntilChanged(),
     );
@@ -57,8 +67,6 @@ function TaskFilter() {
     };
   }, []);
   return (
-    <div>
-      <input type="text" data-test="task-filter" ref={inputRef} />
-    </div>
+    <input type="text" data-test="task-filter" ref={inputRef} />
   );
 }

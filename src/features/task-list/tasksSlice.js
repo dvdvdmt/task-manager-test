@@ -1,11 +1,15 @@
 /* eslint-disable no-param-reassign,no-unused-vars */
+import {navigate} from 'hookrouter';
 import {createSlice} from 'redux-starter-kit';
-import {getTask, getTasks, updateTask} from '../../utils/api.js';
+import {
+  createNewTask, getTask, getTasks, updateTask,
+} from '../../utils/api.js';
 
 const initialState = {
   isFirstLoad: true,
   isLoading: false,
   isTaskSaving: false,
+  isTaskCreating: false,
   error: null,
   taskById: {},
   tasksPerPage: 10,
@@ -50,6 +54,17 @@ const {reducer, actions} = createSlice({
       state.isTaskSaving = false;
       state.taskById[task.id] = task;
     },
+    createTaskStart(state) {
+      state.isTaskCreating = true;
+    },
+    createTaskFailure(state, {payload: error}) {
+      state.isTaskCreating = false;
+      state.error = error;
+    },
+    createTaskSuccess(state, {payload: task}) {
+      state.isTaskCreating = false;
+      state.taskById[task.id] = task;
+    },
   },
 });
 
@@ -91,6 +106,9 @@ export const {
   saveTaskStart,
   saveTaskFailure,
   saveTaskSuccess,
+  createTaskStart,
+  createTaskFailure,
+  createTaskSuccess,
 } = actions;
 
 export function fetchTasks() {
@@ -127,6 +145,20 @@ export function saveTask(task) {
       dispatch(saveTaskSuccess(updatedTask));
     } catch (e) {
       dispatch(saveTaskFailure(e.message));
+      throw e;
+    }
+  };
+}
+
+export function createTask(userId) {
+  return async (dispatch) => {
+    try {
+      dispatch(createTaskStart());
+      const newTask = await createNewTask(userId);
+      navigate(`/tasks/${newTask.id}`);
+      dispatch(createTaskSuccess(newTask));
+    } catch (e) {
+      dispatch(createTaskFailure(e.message));
       throw e;
     }
   };

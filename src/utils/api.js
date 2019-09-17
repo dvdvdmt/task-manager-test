@@ -24,6 +24,16 @@ export async function updateTask(task) {
   return updatedTask;
 }
 
+export async function createNewTask(userId) {
+  const {data: updatedTask} = await api.post('tasks', {
+    authorId: userId,
+    description: '',
+    summary: '',
+    dueDate: new Date().toISOString(),
+  });
+  return updatedTask;
+}
+
 export async function authenticateUser() {
   const sessionId = getLocalSession();
   if (!sessionId) {

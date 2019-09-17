@@ -46,9 +46,14 @@ context('Task list', () => {
   it('opens task', () => {
     cy.get('{task-row}').eq(0).click({force: true});
     cy.url().should('include', '/tasks/1');
-    cy.get('{task-view}').should(($task) => {
-      expect($task.find('[data-test=task-summary]')).to.have.value('Task summary');
-      expect($task.find('[data-test=task-description]')).to.have.value('Task description');
-    });
+    cy.get('{task-summary}').should('have.value', 'Task summary');
+    cy.get('{task-description}').should('have.value', 'Task description');
+  });
+
+  it('creates new tasks', () => {
+    cy.get('{create-task}').click();
+    cy.url().should('match', /\/tasks\/\d*$/);
+    cy.get('{task-summary}').should('not.have.value');
+    cy.get('{task-description}').should('not.have.value');
   });
 });

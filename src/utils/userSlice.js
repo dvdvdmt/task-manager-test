@@ -10,6 +10,7 @@ const initialState = {
   name: null,
   fullName: null,
   avatarUrl: null,
+  id: null,
 };
 const {reducer, actions} = createSlice({
   slice: 'user',
@@ -34,7 +35,14 @@ function start(state) {
   state.isLoading = true;
 }
 
-function success(state, {payload: {name, fullName, avatarUrl}}) {
+function success(state, {
+  payload: {
+    name,
+    fullName,
+    avatarUrl,
+    id,
+  },
+}) {
   state.isFirstLoad = false;
   state.isLoading = false;
   state.error = null;
@@ -42,6 +50,7 @@ function success(state, {payload: {name, fullName, avatarUrl}}) {
   state.name = name;
   state.fullName = fullName;
   state.avatarUrl = avatarUrl;
+  state.id = id;
 }
 
 function failure(state, action) {
