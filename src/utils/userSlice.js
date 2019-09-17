@@ -95,6 +95,7 @@ export function logout() {
       dispatch(logOutSuccess());
     } catch (e) {
       dispatch(logOutFailure(e.message));
+      throw e;
     }
   };
 }

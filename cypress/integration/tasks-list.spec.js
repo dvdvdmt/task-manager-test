@@ -16,7 +16,7 @@ context('Task list', () => {
     });
   });
 
-  it.only('shows tasks with all necessary fields', () => {
+  it('shows tasks with all necessary fields', () => {
     cy.get('{task-row}').should(($rows) => {
       $rows.each((_, row) => {
         const $row = Cypress.$(row);
@@ -28,6 +28,8 @@ context('Task list', () => {
         expect($summary).to.exist;
         expect($dueDate).to.exist;
         expect($author).to.exist;
+        expect($author.find('[data-test=author-avatar]')).to.exist;
+        expect($author.find('[data-test=author-name]')).to.exist;
       });
     });
   });

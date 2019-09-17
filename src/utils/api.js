@@ -4,6 +4,11 @@ const api = axios.create({
   baseURL: 'http://localhost:3000/',
 });
 
+export async function getUsers() {
+  const {data: users} = await api.get('users');
+  return users;
+}
+
 export async function getTasks() {
   const {data: tasks} = await api.get('tasks');
   return tasks;

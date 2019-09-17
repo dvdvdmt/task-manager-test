@@ -1,17 +1,15 @@
 /* eslint-disable no-param-reassign,no-unused-vars */
 import {createSlice} from 'redux-starter-kit';
-import {getTasks} from '../../utils/api.js';
+import {getUsers} from './api.js';
 
 const initialState = {
+  isFirstLoad: true,
   isLoading: false,
   error: null,
-  taskById: {},
-  tasksPerPage: 10,
-  pageNumber: 0,
-  currentPageTaskIds: [],
+  userById: {},
 };
 const {reducer, actions} = createSlice({
-  slice: 'tasks',
+  slice: 'users',
   initialState,
   reducers: {
     fetchStart: start,
@@ -24,20 +22,17 @@ function start(state) {
   state.isLoading = true;
 }
 
-function success(state, {payload: tasks}) {
+function success(state, {payload: users}) {
+  state.isFirstLoad = false;
   state.isLoading = false;
   state.error = null;
-  tasks.forEach((task) => {
-    state.taskById[task.id] = task;
+  users.forEach((user) => {
+    state.userById[user.id] = user;
   });
-  const sliceStart = state.pageNumber * state.tasksPerPage;
-  const sliceEnd = (state.pageNumber + 1) * state.tasksPerPage;
-  state.currentPageTaskIds = tasks
-    .slice(sliceStart, sliceEnd)
-    .map(({id}) => id);
 }
 
 function failure(state, action) {
+  state.isFirstLoad = false;
   state.isLoading = false;
   state.error = action.payload;
 }
@@ -48,12 +43,12 @@ export const {
   fetchFailure,
 } = actions;
 
-export function fetchTasks() {
+export function fetchUsers() {
   return async (dispatch) => {
     try {
       dispatch(fetchStart());
-      const tasks = await getTasks();
-      dispatch(fetchSuccess(tasks));
+      const users = await getUsers();
+      dispatch(fetchSuccess(users));
     } catch (e) {
       dispatch(fetchFailure(e.message));
       throw e;
@@ -61,10 +56,12 @@ export function fetchTasks() {
   };
 }
 
-export function tasksSelector({tasks}) {
-  const {currentPageTaskIds, taskById} = tasks;
-  const currentPageTasks = currentPageTaskIds.map((id) => taskById[id]);
-  return {...tasks, currentPageTasks};
+export function userByIdSelector(userId) {
+  return ({users}) => users.userById[userId];
+}
+
+export function usersSelector({users}) {
+  return {users, isLoading: users.isFirstLoad || users.isLoading};
 }
 
 export default reducer;
