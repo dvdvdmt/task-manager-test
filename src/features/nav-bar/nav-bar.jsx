@@ -2,14 +2,22 @@ import * as c from 'classnames';
 import {A} from 'hookrouter';
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import moment from 'moment';
 import {logout, userSelector} from '../../utils/userSlice.js';
 import './nav-bar.scss';
 
 export default function NavBar() {
   const {isAuthenticated, avatarUrl, fullName} = useSelector(userSelector);
+  const currentDate = moment();
+  const dayOfWeek = currentDate.format('dddd');
+  const longDate = currentDate.format('D MMMM, YYYY');
   return (
     <nav className="nav-bar">
       <img className="nav-bar__logo" src="/assets/icons/brand-logo.svg" alt="brand logo" width="60" height="60" />
+      <div className="nav-bar__date">
+        <div className="nav-bar__day-of-week">{dayOfWeek}</div>
+        <div className="nav-bar__long-date">{longDate}</div>
+      </div>
       <UserBar classes="nav-bar__user-bar" isVisible={isAuthenticated} avatarUrl={avatarUrl} fullName={fullName} />
     </nav>
   );
