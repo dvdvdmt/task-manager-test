@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {fromEvent} from 'rxjs';
 // eslint-disable-next-line import/extensions
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
-import Loader from '../../components/loader.jsx';
+import ProgressSpinner from '../../components/progress-spinner/progress-spinner.jsx';
 import {userSelector} from '../../utils/userSlice.js';
 import {fetchUsers, usersSelector} from '../../utils/usersSlice.js';
 import TaskRow from './task-row/task-row.jsx';
@@ -29,7 +29,7 @@ export default function TaskList() {
       </div>
       {
         isLoading
-          ? <Loader />
+          ? <ProgressSpinner />
           : <TaskTable />
       }
     </div>

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import Loader from '../../components/loader.jsx';
+import ProgressSpinner from '../../components/progress-spinner/progress-spinner.jsx';
 import {fetchTask, saveTask, tasksSelector} from '../task-list/tasksSlice.js';
 
 function TaskView({taskId}) {
@@ -21,7 +21,7 @@ function TaskView({taskId}) {
     }
   }, [task]);
   return isLoading
-    ? <Loader />
+    ? <ProgressSpinner />
     : (
       <div className="task-view" data-test="task-view">
         <input type="text" className="task-summary" data-test="task-summary" value={summary} onChange={onChangeTaskSummary} />

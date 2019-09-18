@@ -5,13 +5,18 @@
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
   margin: 0;
   font-family: "Museo Sans Cyrl", sans-serif;
-  width: 100%;
-  height: 100%;
   color: $gun-powder-black;
 }
 
 #app {
   box-shadow: inset gray 0 0 10px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }

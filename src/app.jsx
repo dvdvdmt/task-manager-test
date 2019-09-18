@@ -3,7 +3,7 @@ import React, {useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import {Provider, useDispatch, useSelector} from 'react-redux';
 import './app.scss';
-import Loader from './components/loader.jsx';
+import ProgressSpinner from './components/progress-spinner/progress-spinner.jsx';
 import Login from './features/login/login.jsx';
 import NavBar from './features/nav-bar/nav-bar.jsx';
 import NotFound from './features/not-found/not-found.jsx';
@@ -32,7 +32,7 @@ function App() {
   }
   const routeResult = useRoutes(routes);
   return isFirstLoad
-    ? (<Loader />)
+    ? (<ProgressSpinner />)
     : (
       <>
         {isLogInNeeded ? '' : <NavBar />}
