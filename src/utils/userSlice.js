@@ -11,6 +11,7 @@ const initialState = {
   fullName: null,
   avatarUrl: null,
   id: null,
+  logInError: '',
 };
 const {reducer, actions} = createSlice({
   slice: 'user',
@@ -20,8 +21,31 @@ const {reducer, actions} = createSlice({
     authSuccess: success,
     authFailure: failure,
     logInStart: start,
-    logInSuccess: success,
-    logInFailure: failure,
+    logInSuccess(state, {
+      payload: {
+        name,
+        fullName,
+        avatarUrl,
+        id,
+      },
+    }) {
+      state.isFirstLoad = false;
+      state.isLoading = false;
+      state.error = null;
+      state.isAuthenticated = true;
+      state.name = name;
+      state.fullName = fullName;
+      state.avatarUrl = avatarUrl;
+      state.id = id;
+      state.logInError = '';
+    },
+    logInFailure(state, {payload: error}) {
+      state.isFirstLoad = false;
+      state.isLoading = false;
+      state.isAuthenticated = false;
+      state.error = error;
+      state.logInError = 'Invalid username and password';
+    },
     logOutStart: start,
     logOutSuccess(state) {
       state.isLoading = false;
@@ -110,8 +134,8 @@ export function logout() {
 }
 
 export function userSelector(store) {
-  const {user: {isFirstLoad, isLoading, isAuthenticated}} = store;
-  const isLogInNeeded = !isFirstLoad && !isLoading && !isAuthenticated;
+  const {user: {isFirstLoad, isAuthenticated}} = store;
+  const isLogInNeeded = !isFirstLoad && !isAuthenticated;
   return {...store.user, isLogInNeeded};
 }
 

@@ -1,0 +1,159 @@
+@import "../../variables";
+
+.login {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.login__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 400px;
+  padding: 0 5px;
+}
+
+.login__header {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.login__message {
+  font-size: 15px;
+  color: transparentize($trout-gray, 0.5);
+  margin-bottom: 60px;
+}
+
+.login__form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login__form-group {
+  display: flex;
+  position: relative;
+  align-items: center;
+  margin-bottom: 40px;
+  width: 100%;
+}
+
+.login__form-label {
+  position: absolute;
+  top: 0;
+  left: 6px;
+  transition-duration: 0.2s;
+  font-size: 15px;
+}
+
+.login__form-input {
+  display: block;
+  width: 100%;
+  height: 32px;
+  border: none;
+  box-shadow: $athens-gray 0 2px;
+
+  &:focus + label, &:valid + label {
+    top: -70%;
+    transform: scale(0.8) translateX(-20%);
+  }
+}
+
+.login__form-checkbox {
+  position: absolute;
+  opacity: 0;
+
+  & + label {
+    display: flex;
+    flex-wrap: nowrap;
+    position: relative;
+    cursor: pointer;
+    padding: 0;
+
+    &::before {
+      content: "";
+      display: block;
+      top: 0;
+      left: 0;
+      width: 20px;
+      height: 20px;
+      margin-right: 15px;
+      background: url("/assets/icons/checkbox-icon.svg") no-repeat center;
+    }
+  }
+
+  &:checked + label::before {
+    background-image: url("/assets/icons/checkbox-checked-icon.svg");
+  }
+}
+
+.login__remember-me {
+  flex-basis: 100%;
+}
+
+.login__forgot-password {
+  color: $pelorous-gray;
+}
+
+.login__form-submit {
+  width: 140px;
+  height: 50px;
+  color: white;
+  cursor: pointer;
+  background-image: $button-gradient;
+  border: none;
+  border-radius: 25px;
+  font-size: 12px;
+  text-transform: uppercase;
+  outline: none;
+  transition-duration: 0.2s;
+
+  &:hover {
+    box-shadow: transparentize(black, 0.85) 0 6px 12px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.login__error {
+  opacity: 0;
+  margin-top: -25px;
+  height: 25px;
+  color: $sweet-pink-red;
+
+  &--shake {
+    opacity: 1;
+    animation-name: shake;
+    animation-duration: 1s;
+  }
+}
+
+@keyframes shake {
+  from,
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translate3d(-10px, 0, 0);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translate3d(10px, 0, 0);
+  }
+}

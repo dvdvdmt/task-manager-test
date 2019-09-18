@@ -35,7 +35,7 @@ function App() {
     ? (<Loader />)
     : (
       <>
-        <NavBar />
+        {isLogInNeeded ? '' : <NavBar />}
         {routeResult || <NotFound />}
       </>
     );
