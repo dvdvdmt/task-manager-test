@@ -13,7 +13,15 @@ export default function NavBar() {
   const longDate = currentDate.format('D MMMM, YYYY');
   return (
     <nav className="nav-bar">
-      <img className="nav-bar__logo" src="/assets/icons/brand-logo.svg" alt="brand logo" width="60" height="60" />
+      <A href="/">
+        <img
+          className="nav-bar__logo"
+          src="/assets/icons/brand-logo.svg"
+          alt="brand logo"
+          width="60"
+          height="60"
+        />
+      </A>
       <div className="nav-bar__date">
         <div className="nav-bar__day-of-week">{dayOfWeek}</div>
         <div className="nav-bar__long-date">{longDate}</div>
