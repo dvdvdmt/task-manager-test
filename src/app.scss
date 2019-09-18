@@ -24,3 +24,8 @@ body {
 .app__content {
   display: flex;
 }
+
+.app__page {
+  width: 100%;
+  background-color: $light-gray;
+}

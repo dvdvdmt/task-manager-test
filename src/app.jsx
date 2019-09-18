@@ -39,7 +39,9 @@ function App() {
         {isLogInNeeded ? '' : <NavBar />}
         <div className="app__content">
           {isLogInNeeded ? '' : <SideBar />}
-          {routeResult || <NotFound />}
+          <div className="app__page">
+            {routeResult || <NotFound />}
+          </div>
         </div>
       </>
     );

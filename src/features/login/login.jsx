@@ -2,6 +2,7 @@ import {navigate} from 'hookrouter';
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import * as c from 'classnames';
+import Button from '../../components/button/button.jsx';
 import {login, userSelector} from '../../utils/userSlice.js';
 import './login.scss';
 
@@ -49,7 +50,7 @@ function Login() {
             <div className="login__forgot-password">Forgot your password?</div>
           </div>
           <div className={c('login__error', {'login__error--shake': !isLoading && logInError})}>{logInError}</div>
-          <button type="submit" data-test="submit" className="login__form-submit" disabled={isLoading}>Log In</button>
+          <Button type="submit" dataTest="submit">Log In</Button>
         </form>
       </div>
     </div>
