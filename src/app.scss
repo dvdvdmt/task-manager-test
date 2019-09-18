@@ -15,7 +15,6 @@ body {
 }
 
 .app {
-  box-shadow: inset gray 0 0 10px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -23,6 +22,7 @@ body {
 
 .app__content {
   display: flex;
+  flex-grow: 1;
 }
 
 .app__page {
