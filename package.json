@@ -10,7 +10,8 @@
     "api-server": "npm run db-seed && json-server --watch db.json",
     "db-seed": "cp db-seed.json db.json",
     "lint": "eslint ./src ./cypress",
-    "e2e": "cypress open"
+    "e2e": "cypress open",
+    "demo": "npm run api-server & npm start"
   },
   "author": "Davydov Dmitriy",
   "license": "ISC",
