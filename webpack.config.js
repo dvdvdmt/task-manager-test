@@ -1,6 +1,7 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-module.exports = {
+const config = {
   entry: './src/index.js',
   output: {
     path: `${__dirname}/build`,
@@ -45,8 +46,16 @@ module.exports = {
       template: './src/index.html',
       filename: 'index.html',
     }),
+    new CopyWebpackPlugin([
+      {
+        from: 'src/assets',
+        to: 'assets',
+      },
+    ]),
   ],
   devServer: {
     historyApiFallback: true,
   },
 };
+
+module.exports = config;
