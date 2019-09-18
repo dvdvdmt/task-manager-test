@@ -3,9 +3,10 @@ import React, {useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import {Provider, useDispatch, useSelector} from 'react-redux';
 import './app.scss';
+import NavBar from './components/nav-bar/nav-bar.jsx';
 import ProgressSpinner from './components/progress-spinner/progress-spinner.jsx';
+import SideBar from './components/side-bar/side-bar.jsx';
 import Login from './features/login/login.jsx';
-import NavBar from './features/nav-bar/nav-bar.jsx';
 import NotFound from './features/not-found/not-found.jsx';
 import TaskList from './features/task-list/task-list.jsx';
 import TaskView from './features/task-view/task-view.jsx';
@@ -36,7 +37,10 @@ function App() {
     : (
       <>
         {isLogInNeeded ? '' : <NavBar />}
-        {routeResult || <NotFound />}
+        <div className="app__content">
+          {isLogInNeeded ? '' : <SideBar />}
+          {routeResult || <NotFound />}
+        </div>
       </>
     );
 }
