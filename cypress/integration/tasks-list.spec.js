@@ -60,4 +60,14 @@ context('Task list', () => {
     cy.get('{task-summary}').should('not.have.value');
     cy.get('{task-description}').should('not.have.value');
   });
+
+  it('sorts table', () => {
+    cy.get('{task-table-header}').eq(1).click();
+    cy.get('{task-row} {task-summary}').should(($rows) => {
+      expect($rows.eq(0).text()).to.be.lessThan($rows.eq(1).text());
+      expect($rows.eq(1).text()).to.be.lessThan($rows.eq(2).text());
+      expect($rows.eq(2).text()).to.be.lessThan($rows.eq(3).text());
+      expect($rows.eq(3).text()).to.be.lessThan($rows.eq(4).text());
+    });
+  });
 });

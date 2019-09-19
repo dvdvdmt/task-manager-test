@@ -104,6 +104,8 @@ module.exports = {
     'import/extensions': ['error', 'always', {'ignorePackages': true}],
     'jsx-a11y/accessible-emoji': 'off',
     'jsx-a11y/label-has-associated-control': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
+    'jsx-a11y/no-static-element-interactions': 'off',
     'react/prop-types': 'off',
     'no-unused-expressions': 'off',
     'no-shadow': 'off'

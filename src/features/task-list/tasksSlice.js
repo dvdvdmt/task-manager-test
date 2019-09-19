@@ -16,6 +16,7 @@ const initialState = {
   pageNumber: 0,
   currentPageTaskIds: [],
   filter: '',
+  sortBy: {},
 };
 const {reducer, actions} = createSlice({
   slice: 'tasks',
@@ -65,6 +66,10 @@ const {reducer, actions} = createSlice({
       state.isTaskCreating = false;
       state.taskById[task.id] = task;
     },
+    setSorting(state, {payload: {name, isActive}}) {
+      state.sortBy[name] = isActive;
+      state.currentPageTaskIds = getCurrentPageTaskIds(state);
+    },
   },
 });
 
@@ -83,6 +88,7 @@ function getCurrentPageTaskIds({
   pageNumber,
   tasksPerPage,
   filter,
+  sortBy,
 }) {
   const sliceStart = pageNumber * tasksPerPage;
   const sliceEnd = (pageNumber + 1) * tasksPerPage;
@@ -90,9 +96,26 @@ function getCurrentPageTaskIds({
   if (filter) {
     tasks = tasks.filter(({summary}) => summary.includes(filter));
   }
+  Object.entries(sortBy).forEach(([name, isActive]) => {
+    if (isActive) {
+      tasks = tasks.sort(compareByKey(name));
+    }
+  });
   return tasks
     .slice(sliceStart, sliceEnd)
     .map(({id}) => id);
+}
+
+function compareByKey(key) {
+  return (a, b) => {
+    if (a[key] < b[key]) {
+      return -1;
+    }
+    if (a[key] > b[key]) {
+      return 1;
+    }
+    return 0;
+  };
 }
 
 export const {
@@ -109,6 +132,7 @@ export const {
   createTaskStart,
   createTaskFailure,
   createTaskSuccess,
+  setSorting,
 } = actions;
 
 export function fetchTasks() {
@@ -169,7 +193,15 @@ export function tasksSelector({tasks}) {
     currentPageTaskIds, taskById, isFirstLoad, isLoading,
   } = tasks;
   const currentPageTasks = currentPageTaskIds.map((id) => taskById[id]);
-  return {...tasks, currentPageTasks, isLoading: isFirstLoad || isLoading};
+  return {
+    ...tasks,
+    currentPageTasks,
+    isLoading: isFirstLoad || isLoading,
+  };
+}
+
+export function sortingSelector({tasks}) {
+  return tasks.sortBy;
 }
 
 export default reducer;
