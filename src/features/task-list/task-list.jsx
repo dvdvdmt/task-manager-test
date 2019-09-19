@@ -4,10 +4,10 @@ import ProgressSpinner from '../../components/progress-spinner/progress-spinner.
 import {fetchUsers, usersSelector} from '../../utils/usersSlice.js';
 import TaskFilter from './task-filter/task-filter.jsx';
 import './task-list.scss';
-import TaskRow from './task-row/task-row.jsx';
+import TaskTable from './task-table/task-table.jsx';
 import {fetchTasks, tasksSelector} from './tasksSlice.js';
 
-export default function TaskList() {
+function TaskList() {
   const dispatch = useDispatch();
   const {isLoading: isTasksLoading} = useSelector(tasksSelector);
   const {isLoading: isUsersLoading} = useSelector(usersSelector);
@@ -22,17 +22,10 @@ export default function TaskList() {
       {
         isLoading
           ? <ProgressSpinner />
-          : <TaskTable />
+          : <TaskTable className="task-list__card" />
       }
     </div>
   );
 }
 
-function TaskTable() {
-  const {currentPageTasks: tasks} = useSelector(tasksSelector);
-  return (
-    <div className="task-list__table">
-      {tasks.map((task) => (<TaskRow key={task.id} task={task} />))}
-    </div>
-  );
-}
+export default TaskList;

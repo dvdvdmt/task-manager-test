@@ -1,0 +1,49 @@
+@import '../../../variables';
+
+.task-table {
+
+}
+
+.task-table__head {
+  font-weight: 700;
+}
+
+.task-table__head,
+.task-table__row {
+  display: flex;
+  align-items: center;
+  height: 80px;
+  border-bottom: 1px solid $light-gray;
+}
+
+@mixin task-table__col {
+  &:nth-child(1) { // number
+    flex-basis: 10%;
+  }
+  &:nth-child(2) { // summary
+    flex-basis: 45%;
+  }
+  &:nth-child(3) { // due date
+    flex-basis: 20%;
+  }
+  &:nth-child(4) { // author
+    flex-basis: 25%;
+  }
+}
+
+.task-table__th {
+  @include task-table__col;
+
+  &:first-child { // number
+    padding-left: 30px;
+  }
+}
+
+.task-table__td {
+  @include task-table__col;
+
+  &:first-child { // number
+    padding-left: 30px;
+  }
+}
+
