@@ -58,8 +58,11 @@
   height: 32px;
   border: none;
   box-shadow: $athens-gray 0 2px;
+  padding: 0 10px;
+  font-size: 15px;
 
-  &:focus + label, &:valid + label {
+  &:focus + label,
+  &:valid + label {
     top: -70%;
     transform: scale(0.8) translateX(-20%);
   }
