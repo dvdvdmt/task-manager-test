@@ -3,8 +3,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import {fromEvent} from 'rxjs';
 import * as c from 'classnames';
 import './task-filter.scss';
+import {
+  debounceTime, distinctUntilChanged, filter, map,
 // eslint-disable-next-line import/extensions
-import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
+} from 'rxjs/operators';
 import Button from '../../../components/button/button.jsx';
 import {userSelector} from '../../../utils/userSlice.js';
 import {createTask, setTaskFilter} from '../tasksSlice.js';
@@ -17,6 +19,7 @@ function TaskFilter({classes}) {
     const {current} = inputRef;
     const onInput$ = fromEvent(current, 'input').pipe(
       map((e) => e.target.value),
+      filter((text) => !text || text.length > 2),
       debounceTime(300),
       distinctUntilChanged(),
     );
@@ -24,6 +27,7 @@ function TaskFilter({classes}) {
       dispatch(setTaskFilter(text));
     });
     return () => {
+      dispatch(setTaskFilter(''));
       subscription.unsubscribe();
     };
   }, []);

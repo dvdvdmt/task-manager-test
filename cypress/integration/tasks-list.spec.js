@@ -34,13 +34,17 @@ context('Task list', () => {
     });
   });
 
-  it('filters tasks', () => {
+  it('filters tasks and resets filter on task selection', () => {
     cy.get('{task-filter}').should('exist');
     cy.get('{task-filter}').type('program');
     cy.get('{task-row}').should(($rows) => {
       expect($rows).to.have.length(1);
       expect($rows).to.contain('program');
     });
+    cy.get('{task-row}').click({force: true});
+    cy.go('back');
+    cy.get('{task-row}').should('have.length.greaterThan', 1);
+    cy.get('{task-filter}').should('not.have.value');
   });
 
   it('opens task', () => {
