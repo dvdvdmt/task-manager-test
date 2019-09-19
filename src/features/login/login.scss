@@ -13,7 +13,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 400px;
+  width: 400px;
   padding: 0 5px;
 }
 
@@ -96,11 +96,8 @@
   }
 }
 
-.login__remember-me {
-  flex-basis: 100%;
-}
-
 .login__forgot-password {
+  margin-left: auto;
   color: $pelorous-gray;
 }
 
